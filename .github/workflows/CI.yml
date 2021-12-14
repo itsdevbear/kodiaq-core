@@ -2,13 +2,15 @@ name: CI
 
 on:
   push:
+    branches:
+      - master
   pull_request:
 
 jobs:
   test:
     strategy:
       matrix:
-        node: ["14.x"]
+        node: ['10.x', '12.x']
         os: [ubuntu-latest]
 
     runs-on: ${{ matrix.os }}
@@ -29,8 +31,7 @@ jobs:
           key: ${{ matrix.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ matrix.os }}-yarn-
-
       - run: yarn
+
       - run: yarn lint
-      - run: yarn compile
       - run: yarn test
