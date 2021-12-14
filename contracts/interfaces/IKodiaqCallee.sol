@@ -11,4 +11,3 @@ interface IKodiaqCallee {
         bytes calldata data
     ) external;
 }
-

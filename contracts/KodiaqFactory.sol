@@ -30,15 +30,10 @@ contract KodiaqFactory is IKodiaqFactory {
             ? (tokenA, tokenB)
             : (tokenB, tokenA);
         require(token0 != address(0), "Kodiaq: ZERO_ADDRESS");
-        require(
-            getPair[token0][token1] == address(0),
-            "Kodiaq: PAIR_EXISTS"
-        ); // single check is sufficient
+        require(getPair[token0][token1] == address(0), "Kodiaq: PAIR_EXISTS"); // single check is sufficient
 
         pair = address(
-            new KodiaqPair{
-                salt: keccak256(abi.encodePacked(token0, token1))
-            }()
+            new KodiaqPair{salt: keccak256(abi.encodePacked(token0, token1))}()
         );
         IKodiaqPair(pair).initialize(token0, token1);
         getPair[token0][token1] = pair;

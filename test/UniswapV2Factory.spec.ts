@@ -29,10 +29,7 @@ describe("KodiaqFactory", () => {
     expect(await factory.allPairsLength()).to.eq(0);
   });
 
-  async function createPair(
-    factory: KodiaqFactory,
-    tokens: [string, string]
-  ) {
+  async function createPair(factory: KodiaqFactory, tokens: [string, string]) {
     const pairContract = await ethers.getContractFactory("KodiaqPair");
     const create2Address = getCreate2Address(
       factory.address,
