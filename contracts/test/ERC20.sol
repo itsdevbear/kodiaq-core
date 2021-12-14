@@ -1,9 +1,11 @@
-pragma solidity =0.5.16;
+// SPDX-License-Identifier: GPL-3.0-or-later
 
-import '../KodiaqERC20.sol';
+pragma solidity >=0.8.4;
+
+import "../KodiaqERC20.sol";
 
 contract ERC20 is KodiaqERC20 {
-    constructor(uint _totalSupply) public {
+    constructor(uint256 _totalSupply) {
         _mint(msg.sender, _totalSupply);
     }
 }

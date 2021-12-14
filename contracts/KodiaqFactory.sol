@@ -1,7 +1,9 @@
-pragma solidity =0.5.16;
+// SPDX-License-Identifier: GPL-3.0-or-later
 
-import './interfaces/IKodiaqFactory.sol';
-import './KodiaqPair.sol';
+pragma solidity >=0.8.4;
+
+import "./interfaces/IKodiaqFactory.sol";
+import "./KodiaqPair.sol";
 
 contract KodiaqFactory is IKodiaqFactory {
     address public feeTo;
@@ -10,26 +12,34 @@ contract KodiaqFactory is IKodiaqFactory {
     mapping(address => mapping(address => address)) public getPair;
     address[] public allPairs;
 
-    event PairCreated(address indexed token0, address indexed token1, address pair, uint);
-
-    constructor(address _feeToSetter) public {
+    constructor(address _feeToSetter) {
         feeToSetter = _feeToSetter;
     }
 
-    function allPairsLength() external view returns (uint) {
+    function allPairsLength() external view returns (uint256) {
         return allPairs.length;
     }
 
-    function createPair(address tokenA, address tokenB) external returns (address pair) {
-        require(tokenA != tokenB, 'Kodiaq: IDENTICAL_ADDRESSES');
-        (address token0, address token1) = tokenA < tokenB ? (tokenA, tokenB) : (tokenB, tokenA);
-        require(token0 != address(0), 'Kodiaq: ZERO_ADDRESS');
-        require(getPair[token0][token1] == address(0), 'Kodiaq: PAIR_EXISTS'); // single check is sufficient
-        bytes memory bytecode = type(KodiaqPair).creationCode;
-        bytes32 salt = keccak256(abi.encodePacked(token0, token1));
-        assembly {
-            pair := create2(0, add(bytecode, 32), mload(bytecode), salt)
-        }
+    function createPair(address tokenA, address tokenB)
+        external
+       
+        returns (address pair)
+    {
+        require(tokenA != tokenB, "Kodiaq: IDENTICAL_ADDRESSES");
+        (address token0, address token1) = tokenA < tokenB
+            ? (tokenA, tokenB)
+            : (tokenB, tokenA);
+        require(token0 != address(0), "Kodiaq: ZERO_ADDRESS");
+        require(
+            getPair[token0][token1] == address(0),
+            "Kodiaq: PAIR_EXISTS"
+        ); // single check is sufficient
+
+        pair = address(
+            new KodiaqPair{
+                salt: keccak256(abi.encodePacked(token0, token1))
+            }()
+        );
         IKodiaqPair(pair).initialize(token0, token1);
         getPair[token0][token1] = pair;
         getPair[token1][token0] = pair; // populate mapping in the reverse direction
@@ -38,12 +48,12 @@ contract KodiaqFactory is IKodiaqFactory {
     }
 
     function setFeeTo(address _feeTo) external {
-        require(msg.sender == feeToSetter, 'Kodiaq: FORBIDDEN');
+        require(msg.sender == feeToSetter, "Kodiaq: FORBIDDEN");
         feeTo = _feeTo;
     }
 
     function setFeeToSetter(address _feeToSetter) external {
-        require(msg.sender == feeToSetter, 'Kodiaq: FORBIDDEN');
+        require(msg.sender == feeToSetter, "Kodiaq: FORBIDDEN");
         feeToSetter = _feeToSetter;
     }
 }

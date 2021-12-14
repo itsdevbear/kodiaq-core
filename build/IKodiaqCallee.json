@@ -1,7 +1,6 @@
 {
   "abi": [
     {
-      "constant": false,
       "inputs": [
         {
           "internalType": "address",
@@ -26,29 +25,23 @@
       ],
       "name": "kodiaqCall",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     }
   ],
   "evm": {
     "bytecode": {
-      "linkReferences": {},
       "object": "",
-      "opcodes": "",
       "sourceMap": ""
     },
     "deployedBytecode": {
-      "linkReferences": {},
       "object": "",
-      "opcodes": "",
       "sourceMap": ""
     }
   },
-  "metadata": "{\"compiler\":{\"version\":\"0.5.16+commit.9c3226ce\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":false,\"inputs\":[{\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount0\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount1\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"kodiaqCall\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"contracts/interfaces/IKodiaqCallee.sol\":\"IKodiaqCallee\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":999999},\"remappings\":[]},\"sources\":{\"contracts/interfaces/IKodiaqCallee.sol\":{\"keccak256\":\"0x05a2bbe2125a094201baa80eb851ad39086bd666d85cc7f8fd116755981f54c3\",\"urls\":[\"bzz-raw://8b83279609aa274118c99effbec572d81652982c83c58f7170808cd75ae30e79\",\"dweb:/ipfs/QmWXhBuYQRrZMjcgZhJF8t6frFdPYohsB4BHvfBvsJfqJC\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.10+commit.fc410830\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount0\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount1\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"kodiaqCall\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/interfaces/IKodiaqCallee.sol\":\"IKodiaqCallee\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":999999},\"remappings\":[]},\"sources\":{\"contracts/interfaces/IKodiaqCallee.sol\":{\"keccak256\":\"0x05a2bbe2125a094201baa80eb851ad39086bd666d85cc7f8fd116755981f54c3\",\"urls\":[\"bzz-raw://8b83279609aa274118c99effbec572d81652982c83c58f7170808cd75ae30e79\",\"dweb:/ipfs/QmWXhBuYQRrZMjcgZhJF8t6frFdPYohsB4BHvfBvsJfqJC\"]}},\"version\":1}",
   "interface": [
     {
-      "constant": false,
       "inputs": [
         {
           "internalType": "address",
@@ -73,7 +66,6 @@
       ],
       "name": "kodiaqCall",
       "outputs": [],
-      "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     }
