@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-
+//solhint-disable func-name-mixedcase
 //solhint-disable-next-line compiler-version
 pragma solidity >=0.5.0;
 
-//solhint-disable func-name-mixedcase
+import {IKodiaqERC20} from "./IKodiaqERC20.sol";
+
 
 interface IKodiaqPair {
     event Mint(address indexed sender, uint256 amount0, uint256 amount1);
