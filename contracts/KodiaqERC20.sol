@@ -6,8 +6,8 @@ import './libraries/SafeMath.sol';
 contract KodiaqERC20 is IKodiaqERC20 {
     using SafeMath for uint;
 
-    string public constant name = 'Uniswap V2';
-    string public constant symbol = 'UNI-V2';
+    string public constant name = 'Kodiaq LP';
+    string public constant symbol = 'KDAQ-LP';
     uint8 public constant decimals = 18;
     uint  public totalSupply;
     mapping(address => uint) public balanceOf;
