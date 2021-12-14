@@ -4,7 +4,7 @@
 pragma solidity >=0.5.0;
 
 interface IKodiaqCallee {
-    function KodiaqCall(
+    function kodiaqCall(
         address sender,
         uint256 amount0,
         uint256 amount1,

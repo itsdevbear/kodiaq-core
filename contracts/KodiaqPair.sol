@@ -225,7 +225,7 @@ contract KodiaqPair is IKodiaqPair, KodiaqERC20 {
             if (amount0Out > 0) _safeTransfer(_token0, to, amount0Out); // optimistically transfer tokens
             if (amount1Out > 0) _safeTransfer(_token1, to, amount1Out); // optimistically transfer tokens
             if (data.length > 0)
-                IKodiaqCallee(to).KodiaqCall(
+                IKodiaqCallee(to).kodiaqCall(
                     msg.sender,
                     amount0Out,
                     amount1Out,

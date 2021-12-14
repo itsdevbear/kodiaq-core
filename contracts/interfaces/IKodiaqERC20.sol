@@ -5,18 +5,19 @@ pragma solidity >=0.5.0;
 
 //solhint-disable func-name-mixedcase
 interface IKodiaqERC20 {
+    event Transfer(address indexed from, address indexed to, uint256 amount);
+
     event Approval(
         address indexed owner,
         address indexed spender,
-        uint256 value
+        uint256 amount
     );
-    event Transfer(address indexed from, address indexed to, uint256 value);
 
-    function name() external pure returns (string memory);
+    function name() external view returns (string memory);
 
-    function symbol() external pure returns (string memory);
+    function symbol() external view returns (string memory);
 
-    function decimals() external pure returns (uint8);
+    function decimals() external view returns (uint8);
 
     function totalSupply() external view returns (uint256);
 

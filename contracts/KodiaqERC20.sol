@@ -1,30 +1,21 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 pragma solidity >=0.8.0;
 
+import {IKodiaqERC20} from "./interfaces/IKodiaqERC20.sol";
+
 /// @notice Modern and gas efficient ERC20 + EIP-2612 implementation.
 /// @author Modified from Uniswap (https://github.com/Uniswap/uniswap-v2-core/blob/master/contracts/UniswapV2ERC20.sol)
-abstract contract KodiaqERC20 {
-    /*///////////////////////////////////////////////////////////////
-                                  EVENTS
-    //////////////////////////////////////////////////////////////*/
-
-    event Transfer(address indexed from, address indexed to, uint256 amount);
-
-    event Approval(
-        address indexed owner,
-        address indexed spender,
-        uint256 amount
-    );
+abstract contract KodiaqERC20 is IKodiaqERC20 {
 
     /*///////////////////////////////////////////////////////////////
                              METADATA STORAGE
     //////////////////////////////////////////////////////////////*/
 
-    string public name;
+    string public override name;
 
-    string public symbol;
+    string public override symbol;
 
-    uint8 public immutable decimals;
+    uint8 public immutable override decimals;
 
     /*///////////////////////////////////////////////////////////////
                               ERC20 STORAGE
@@ -75,6 +66,7 @@ abstract contract KodiaqERC20 {
     function approve(address spender, uint256 amount)
         public
         virtual
+        override 
         returns (bool)
     {
         allowance[msg.sender][spender] = amount;
@@ -87,6 +79,7 @@ abstract contract KodiaqERC20 {
     function transfer(address to, uint256 amount)
         public
         virtual
+        override
         returns (bool)
     {
         balanceOf[msg.sender] -= amount;
@@ -106,7 +99,7 @@ abstract contract KodiaqERC20 {
         address from,
         address to,
         uint256 amount
-    ) public virtual returns (bool) {
+    ) public virtual override returns (bool) {
         if (allowance[from][msg.sender] != type(uint256).max) {
             allowance[from][msg.sender] -= amount;
         }
@@ -136,7 +129,7 @@ abstract contract KodiaqERC20 {
         uint8 v,
         bytes32 r,
         bytes32 s
-    ) public virtual {
+    ) public virtual override {
         require(
             deadline >= block.timestamp,
             "KodiaqERC20:  PERMIT_DEADLINE_EXPIRED"
@@ -174,7 +167,7 @@ abstract contract KodiaqERC20 {
         emit Approval(owner, spender, value);
     }
 
-    function DOMAIN_SEPARATOR() public view virtual returns (bytes32) {
+    function DOMAIN_SEPARATOR() public view virtual override returns (bytes32) {
         return
             block.chainid == INITIAL_CHAIN_ID
                 ? INITIAL_DOMAIN_SEPARATOR

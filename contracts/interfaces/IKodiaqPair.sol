@@ -5,7 +5,9 @@ pragma solidity >=0.5.0;
 
 //solhint-disable func-name-mixedcase
 
-interface IKodiaqPair {
+import {IKodiaqERC20} from "./IKodiaqERC20.sol";
+
+interface IKodiaqPair is IKodiaqERC20 {
     event Mint(address indexed sender, uint256 amount0, uint256 amount1);
     event Burn(
         address indexed sender,
