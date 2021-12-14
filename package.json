@@ -1,5 +1,5 @@
 {
-  "name": "@uniswap/v2-core",
+  "name": "@bera-chain/kodiaq-core",
   "description": "Build uniswap v2 with solidity 0.8",
   "version": "1.0.1",
   "homepage": "https://uniswap.org",
