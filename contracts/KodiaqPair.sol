@@ -15,22 +15,39 @@ import "./interfaces/IKodiaqCallee.sol";
 //solhint-disable reason-string
 //solhint-disable not-rely-on-time
 
-contract KodiaqPair is IKodiaqPair, KodiaqERC20 {
+contract KodiaqPair is KodiaqERC20 {
     using UQ112x112 for uint224;
 
-    uint256 public constant override MINIMUM_LIQUIDITY = 10**3;
+    event Mint(address indexed sender, uint256 amount0, uint256 amount1);
+    event Burn(
+        address indexed sender,
+        uint256 amount0,
+        uint256 amount1,
+        address indexed to
+    );
+    event Swap(
+        address indexed sender,
+        uint256 amount0In,
+        uint256 amount1In,
+        uint256 amount0Out,
+        uint256 amount1Out,
+        address indexed to
+    );
+    event Sync(uint112 reserve0, uint112 reserve1);
 
-    address public override factory;
-    address public override token0;
-    address public override token1;
+    uint256 public constant MINIMUM_LIQUIDITY = 10**3;
+
+    address public factory;
+    address public token0;
+    address public token1;
 
     uint112 private reserve0; // uses single storage slot, accessible via getReserves
     uint112 private reserve1; // uses single storage slot, accessible via getReserves
     uint32 private blockTimestampLast; // uses single storage slot, accessible via getReserves
 
-    uint256 public override price0CumulativeLast;
-    uint256 public override price1CumulativeLast;
-    uint256 public override kLast; // reserve0 * reserve1, as of immediately after the most recent liquidity event
+    uint256 public price0CumulativeLast;
+    uint256 public price1CumulativeLast;
+    uint256 public kLast; // reserve0 * reserve1, as of immediately after the most recent liquidity event
 
     uint256 private unlocked = 1;
 
@@ -44,7 +61,6 @@ contract KodiaqPair is IKodiaqPair, KodiaqERC20 {
     function getReserves()
         public
         view
-        override
         returns (
             uint112 _reserve0,
             uint112 _reserve1,
@@ -75,7 +91,7 @@ contract KodiaqPair is IKodiaqPair, KodiaqERC20 {
     }
 
     // called once by the factory at time of deployment
-    function initialize(address _token0, address _token1) external override {
+    function initialize(address _token0, address _token1) external {
         require(msg.sender == factory, "Kodiaq: FORBIDDEN"); // sufficient check
         token0 = _token0;
         token1 = _token1;
@@ -136,7 +152,6 @@ contract KodiaqPair is IKodiaqPair, KodiaqERC20 {
     // this low-level function should be called from a contract which performs important safety checks
     function mint(address to)
         external
-        override
         lock
         returns (uint256 liquidity)
     {
@@ -168,7 +183,6 @@ contract KodiaqPair is IKodiaqPair, KodiaqERC20 {
     // this low-level function should be called from a contract which performs important safety checks
     function burn(address to)
         external
-        override
         lock
         returns (uint256 amount0, uint256 amount1)
     {
@@ -204,7 +218,7 @@ contract KodiaqPair is IKodiaqPair, KodiaqERC20 {
         uint256 amount1Out,
         address to,
         bytes calldata data
-    ) external override lock {
+    ) external lock {
         require(
             amount0Out > 0 || amount1Out > 0,
             "Kodiaq: INSUFFICIENT_OUTPUT_AMOUNT"
@@ -260,7 +274,7 @@ contract KodiaqPair is IKodiaqPair, KodiaqERC20 {
     }
 
     // force balances to match reserves
-    function skim(address to) external override lock {
+    function skim(address to) external lock {
         address _token0 = token0; // gas savings
         address _token1 = token1; // gas savings
         _safeTransfer(
@@ -276,7 +290,7 @@ contract KodiaqPair is IKodiaqPair, KodiaqERC20 {
     }
 
     // force reserves to match balances
-    function sync() external override lock {
+    function sync() external lock {
         _update(
             IERC20(token0).balanceOf(address(this)),
             IERC20(token1).balanceOf(address(this)),
