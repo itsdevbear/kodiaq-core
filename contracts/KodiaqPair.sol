@@ -9,6 +9,7 @@ import "./libraries/UQ112x112.sol";
 import "./interfaces/IERC20.sol";
 import "./interfaces/IKodiaqFactory.sol";
 import "./interfaces/IKodiaqCallee.sol";
+import "./libraries/SafeTransferLib.sol";
 
 //solhint-disable func-name-mixedcase
 //solhint-disable avoid-low-level-calls
@@ -66,20 +67,6 @@ contract KodiaqPair is KodiaqERC20 {
         _blockTimestampLast = blockTimestampLast;
     }
 
-    function _safeTransfer(
-        address token,
-        address to,
-        uint256 value
-    ) private {
-        (bool success, bytes memory data) = token.call(
-            abi.encodeWithSelector(IERC20.transfer.selector, to, value)
-        );
-        require(
-            success && (data.length == 0 || abi.decode(data, (bool))),
-            "Kodiaq: TRANSFER_FAILED"
-        );
-    }
-
     constructor() {
         factory = msg.sender;
     }
@@ -103,15 +90,17 @@ contract KodiaqPair is KodiaqERC20 {
             "Kodiaq: OVERFLOW"
         );
         uint32 blockTimestamp = uint32(block.timestamp % 2**32);
-        uint32 timeElapsed = blockTimestamp - blockTimestampLast; // overflow is desired
-        if (timeElapsed > 0 && _reserve0 != 0 && _reserve1 != 0) {
-            // * never overflows, and + overflow is desired
-            price0CumulativeLast +=
-                uint256(UQ112x112.encode(_reserve1).uqdiv(_reserve0)) *
-                timeElapsed;
-            price1CumulativeLast +=
-                uint256(UQ112x112.encode(_reserve0).uqdiv(_reserve1)) *
-                timeElapsed;
+        unchecked {
+            uint32 timeElapsed = blockTimestamp - blockTimestampLast; // overflow is desired     
+            if (timeElapsed > 0 && _reserve0 != 0 && _reserve1 != 0) {
+                // * never overflows, and + overflow is desired
+                price0CumulativeLast +=
+                    uint256(UQ112x112.encode(_reserve1).uqdiv(_reserve0)) *
+                    timeElapsed;
+                price1CumulativeLast +=
+                    uint256(UQ112x112.encode(_reserve0).uqdiv(_reserve1)) *
+                    timeElapsed;
+            }          
         }
         reserve0 = uint112(balance0);
         reserve1 = uint112(balance1);
@@ -196,8 +185,8 @@ contract KodiaqPair is KodiaqERC20 {
             "Kodiaq: INSUFFICIENT_LIQUIDITY_BURNED"
         );
         _burn(address(this), liquidity);
-        _safeTransfer(_token0, to, amount0);
-        _safeTransfer(_token1, to, amount1);
+        SafeTransferLib.safeTransfer(_token0, to, amount0);
+        SafeTransferLib.safeTransfer(_token1, to, amount1);
         balance0 = IERC20(_token0).balanceOf(address(this));
         balance1 = IERC20(_token1).balanceOf(address(this));
 
@@ -230,8 +219,8 @@ contract KodiaqPair is KodiaqERC20 {
             address _token0 = token0;
             address _token1 = token1;
             require(to != _token0 && to != _token1, "Kodiaq: INVALID_TO");
-            if (amount0Out > 0) _safeTransfer(_token0, to, amount0Out); // optimistically transfer tokens
-            if (amount1Out > 0) _safeTransfer(_token1, to, amount1Out); // optimistically transfer tokens
+            if (amount0Out > 0) SafeTransferLib.safeTransfer(_token0, to, amount0Out); // optimistically transfer tokens
+            if (amount1Out > 0) SafeTransferLib.safeTransfer(_token1, to, amount1Out); // optimistically transfer tokens
             if (data.length > 0)
                 IKodiaqCallee(to).kodiaqCall(
                     msg.sender,
@@ -271,12 +260,12 @@ contract KodiaqPair is KodiaqERC20 {
     function skim(address to) external lock {
         address _token0 = token0; // gas savings
         address _token1 = token1; // gas savings
-        _safeTransfer(
+        SafeTransferLib.safeTransfer(
             _token0,
             to,
             IERC20(_token0).balanceOf(address(this)) - reserve0
         );
-        _safeTransfer(
+        SafeTransferLib.safeTransfer(
             _token1,
             to,
             IERC20(_token1).balanceOf(address(this)) - reserve1
