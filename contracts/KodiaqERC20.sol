@@ -6,7 +6,6 @@ import {IKodiaqERC20} from "./interfaces/IKodiaqERC20.sol";
 /// @notice Modern and gas efficient ERC20 + EIP-2612 implementation.
 /// @author Modified from Uniswap (https://github.com/Uniswap/uniswap-v2-core/blob/master/contracts/UniswapV2ERC20.sol)
 abstract contract KodiaqERC20 is IKodiaqERC20 {
-
     /*///////////////////////////////////////////////////////////////
                              METADATA STORAGE
     //////////////////////////////////////////////////////////////*/
@@ -66,7 +65,7 @@ abstract contract KodiaqERC20 is IKodiaqERC20 {
     function approve(address spender, uint256 amount)
         public
         virtual
-        override 
+        override
         returns (bool)
     {
         allowance[msg.sender][spender] = amount;
